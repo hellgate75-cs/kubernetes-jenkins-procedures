@@ -1,0 +1,161 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions/>
+  <description></description>
+  <displayName>OLD Collect Aangine GitLab Projects</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>Git-Lab Continuous Software</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>
+baseUrl = &quot;https://gitlab.com/api/v4&quot;
+//String personalAccessToken = &quot;R6w-1SibHG_yMQy-8y1U&quot; //ilyas
+personalAccessToken = &quot;CKxDxsG9yU-gGD5wCNL1&quot;  //cs-infra
+groupId = &quot;2653348&quot; //aangine
+otherGroupId=&quot;7115574&quot; //aangine/backend-services
+
+node {
+    stage(&quot;Stage ${currentBuild.startTimeInMillis}&quot;) {
+        echo &quot;Create Aangine projects json file in folder: /var/lib/jenkins/workspace/GetAangineGitProjects/&quot;
+        
+        def result = collectAll()
+        //writeJSON file: &apos;git_projects.json&apos;, json: new groovy.json.JsonBuilder(result).toPrettyString()//, pretty: 4
+        writeFile file: &apos;/var/lib/jenkins/workspace/GetAangineGitProjects/git_projects.json&apos;, text: result
+    }
+}
+
+def jsonParse(def json){
+    return new groovy.json.JsonSlurper().parseText(json)
+    //return readJSON(file: &apos;&apos;, text: json)
+}
+
+def getProjects(def groupId) {
+    def baseUrl = &quot;https://gitlab.com/api/v4&quot;;
+	def ret = [];
+	def i = 1;
+	while( true ) {
+		String url = &quot;${baseUrl}/groups/${groupId}?per_page=100&amp;page=${i}&quot;;
+		def group = jsonParse(get(url));
+		def projects=group.get(&quot;projects&quot;);
+		if( projects.size() == 0 ) break
+		projects.each { project -&gt; ret.add(project) }
+		i = i + 1;
+	}
+	return ret
+}
+
+def getRegistryRepositories(def projectId) {
+    def baseUrl = &quot;https://gitlab.com/api/v4&quot;;
+	def ret = [];
+	def i = 1;
+	while( true ) {
+		String url = &quot;${baseUrl}/projects/${projectId}/registry/repositories?per_page=100&amp;page=${i}&quot;;
+		def repos = jsonParse(get(url));
+		if( repos.size() == 0 ) break
+		repos.each { repo -&gt; ret.add(repo) }
+		i = i + 1;
+	}
+	return ret
+}
+
+def getTags(def projectId, def repositoryId) {
+    def baseUrl = &quot;https://gitlab.com/api/v4&quot;;
+	def ret = [];
+	def i = 1;
+	while( true ) {
+		String url = &quot;${baseUrl}/projects/${projectId}/registry/repositories/${repositoryId}/tags?per_page=100&amp;page=${i}&quot;;
+		def tags = jsonParse(get(url));
+		if( tags.size() == 0 ) break
+		tags.each { tag -&gt; ret.add(tag) }
+		i = i + 1;
+	}
+	return ret
+}
+
+def collectAll() {
+    def finalProjects = []
+
+    def projects = getProjects(groupId)
+ 
+    projects.each { project -&gt;
+        println(&quot;Project: ${project.get(&quot;name&quot;)}&quot;)
+
+        def repositories = getRegistryRepositories(project.get(&quot;id&quot;))
+
+        def finalRepositories = []
+        
+        repositories.each { repository -&gt;
+            println(&quot;Project: ${project.get(&quot;name&quot;)} - Repository: ${repository.get(&quot;name&quot;)}&quot;)
+            ArrayList&lt;HashMap&gt; tags = getTags(project.get(&quot;id&quot;), repository.get(&quot;id&quot;))
+
+            println(&quot;Tags: ${tags}&quot;)
+            if (tags.size() &gt; 0) {
+                finalRepositories.add(repository)
+                repository.put(&quot;tags&quot;, tags)
+            }
+        }
+        if (finalRepositories.size() &gt; 0) {
+            println(&quot;Adding Project: ${project.get(&quot;name&quot;)} ...&quot;)
+            project.put(&quot;repositories&quot;, finalRepositories)
+            finalProjects.add(project)
+        }
+    }
+   
+   def otherProjects = getProjects(otherGroupId)
+   
+   otherProjects.each { project -&gt;
+        println(&quot;Project: ${project.get(&quot;name&quot;)}&quot;)
+
+        def repositories = getRegistryRepositories(project.get(&quot;id&quot;))
+
+        def finalRepositories = []
+        
+        repositories.each { repository -&gt;
+            println(&quot;Project: ${project.get(&quot;name&quot;)} - Repository: ${repository.get(&quot;name&quot;)}&quot;)
+          ArrayList&lt;HashMap&gt; tags = getTags(project.get(&quot;id&quot;), repository.get(&quot;id&quot;))
+
+            println(&quot;Tags: ${tags}&quot;)
+            if (tags.size() &gt; 0) {
+                finalRepositories.add(repository)
+                repository.put(&quot;tags&quot;, tags)
+            }
+        }
+        if (finalRepositories.size() &gt; 0) {
+            println(&quot;Adding Project: ${project.get(&quot;name&quot;)} ...&quot;)
+            project.put(&quot;repositories&quot;, finalRepositories)
+            finalProjects.add(project)
+        }
+    }
+    //return projects
+    return new groovy.json.JsonBuilder(finalProjects).toPrettyString()
+}
+
+def get(def url) {
+    def connection = new URL(url).openConnection() as HttpURLConnection
+    connection.setRequestMethod(&quot;GET&quot;)
+    connection.setRequestProperty(&quot;PRIVATE-TOKEN&quot;, personalAccessToken)
+    //connection.setInstanceFollowRedirects(true)
+    //connection.setReadTimeout(60000)
+    //connection.setConnectTimeout(60000)
+    connection.connect()
+    assert connection.getResponseCode() == 200
+    return connection.getInputStream().getText()
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

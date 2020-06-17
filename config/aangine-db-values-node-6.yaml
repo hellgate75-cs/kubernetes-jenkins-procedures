@@ -1,0 +1,93 @@
+services:
+  subdomain: ""
+  affinityNodes:
+    - AFFINITY_NODE_HOSTNAME
+  MongoDbPort: 27022
+  addson_config:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  addson_storage:
+    create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  addson_mockup_data:
+    create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  bridged_network:
+    create: false
+    image:
+      repository: kvaps/bridget
+      tag: v1.0.1
+      pullPolicy: Always
+  network_manager:
+    create: false
+    replicaCount: 1
+  local_volume_provisioner:
+    create: true
+  service_account:
+    create: true
+    enableMongoDbHosts: false
+    image:
+      repository: busybox
+      repositoryTag: latest
+      pullPolicy: Always
+
+  mongodb:
+    create: true
+    image:
+      repository: mongo
+      repositoryTag: bionic
+      pullPolicy: Always
+      service:
+        enabled: true
+  consul:
+    single:
+      create: false
+    cluster:
+      create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/consul
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  jaeger:
+    create: false
+    image:
+      repository: jaegertracing/all-in-one
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  nginx:
+    noSSL:
+      create: false
+    withSSL:
+      create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/nginx
+      repositoryBranch: development
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  redis:
+    create: false
+    image:
+      repository: redis
+      repositoryTag: latest
+      pullPolicy: Always
+    service:
+      enabled: true

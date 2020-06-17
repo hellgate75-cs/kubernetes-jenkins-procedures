@@ -1,0 +1,146 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.6.0"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.6.0">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+    <org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction plugin="workflow-multibranch@2.21">
+      <jobPropertyDescriptors>
+        <string>hudson.model.ParametersDefinitionProperty</string>
+      </jobPropertyDescriptors>
+    </org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <displayName>MongoDb External Backup</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableResumeJobProperty/>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>2</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>Git-Lab Continuous Software</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>Hostname</name>
+          <description>Remote Mongo Database Instance public IP or hostname</description>
+          <defaultValue>0.0.0.0</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Port</name>
+          <description>Remote Mongo Database Instance public TCP Port</description>
+          <defaultValue>27017</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Prefix</name>
+          <description>Define output archive file prefix</description>
+          <defaultValue>aangineQA</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>/*
+properties([
+    parameters([
+        //style=&apos;width:200px;&apos;
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Environment&apos;, randomName: &apos;choice-parameter-0&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Host&apos;, randomName: &apos;choice-parameter-1&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject nodes -cluster-name &quot;+Environment).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+       [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Instance&apos;, randomName: &apos;choice-parameter-2&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject instances -cluster-name &quot;+Environment+&quot; -node-name &quot;+Host).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+       [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;InstanceType&apos;, randomName: &apos;choice-parameter-3&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject instances -cluster-name &quot;+Environment+&quot; -node-name &quot;+Host).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+
+    ])
+])
+*/
+
+pipeline {
+    agent any
+    options {
+        timestamps()
+        timeout(time: 10, unit: &apos;MINUTES&apos;)   // timeout on whole pipeline job
+        //disableConcurrentBuilds()
+    }
+    stages {
+//        stage (&quot;Slack Start Notifier&quot;){
+//            steps{
+//                script{
+//                    message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} Started by ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+//                    slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+//                }
+//            }
+//        }
+        stage (&apos;Execute K8s Verify Deploy&apos;) {
+            steps{
+                script{
+                    ansiColor(&apos;xterm&apos;) {
+                        command = &quot;&quot;&quot;
+                        #!/bin/bash
+                        dos2unix $HOME/continuousdelivery/kubernetes-jenkins-procedures/backup-eternal-database.sh
+                        chmod +x $HOME/continuousdelivery/kubernetes-jenkins-procedures/backup-eternal-database.sh
+                        bash -c &quot;$HOME/continuousdelivery/kubernetes-jenkins-procedures/backup-eternal-database.sh ${params.Hostname} ${params.Port} ${params.Prefix}&quot;
+                        &quot;&quot;&quot;
+                        def output=&quot;&quot;
+                        try {
+                            output = sh( script: command, encoding: &apos;UTF-8&apos;, label: &apos;Verify Environment Instance&apos;, returnStatus: false, returnStdout: true )
+                        } catch (Exception ex) {
+                            println(&quot;Unable Verify Instance ${params.Instance} of Type ${params.InstanceType} : ${ex}&quot;)
+                            throw ex
+                        }
+                        println(output)
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script{
+                //message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} ${currentBuild.result} after ${currentBuild.durationString} ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+                
+                def duration = currentBuild.durationString.replace(&quot; and counting&quot;, &quot;&quot;)
+                message = &quot;&quot;&quot;&lt;${env.RUN_DISPLAY_URL}|${currentBuild.rawBuild.project.displayName} #${env.BUILD_NUMBER}&gt; - ${currentBuild.currentResult} after ${duration}\n*Environment*: &lt;http://${params.IP}/|${params.Environment}&gt;&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+            }
+        }
+    }
+}
+def slackColor(){
+    def messageColor = &quot;warning&quot;
+    switch(currentBuild.result) {
+        case &quot;SUCCESS&quot;:
+            messageColor = &quot;good&quot;
+            break
+        case &quot;UNSTABLE&quot;:
+            messageColor = &quot;warning&quot;
+            break
+        case &quot;FAILURE&quot;:
+            messageColor = &quot;danger&quot;
+            break
+        case null:
+            messageColor = &quot;&quot;
+    }
+    return messageColor
+}
+</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

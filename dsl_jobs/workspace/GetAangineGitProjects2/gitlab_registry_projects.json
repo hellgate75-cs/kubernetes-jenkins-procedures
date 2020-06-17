@@ -1,0 +1,658 @@
+[
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "18830115",
+        "path_with_namespace": "aangine/migration-operator",
+        "path": "migration-operator",
+        "name": "migration-operator"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "17987969",
+        "path_with_namespace": "aangine/power-bi-service",
+        "path": "power-bi-service",
+        "name": "power-bi-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "16867698",
+        "path_with_namespace": "aangine/microsoft-power-bi-proxy",
+        "path": "microsoft-power-bi-proxy",
+        "name": "Microsoft Power Bi Proxy"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "16678649",
+        "path_with_namespace": "aangine/bot-service",
+        "path": "bot-service",
+        "name": "bot-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "15358565",
+        "path_with_namespace": "aangine/user-profile-service",
+        "path": "user-profile-service",
+        "name": "User Profile Service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "14732558",
+        "path_with_namespace": "aangine/reporter-service",
+        "path": "reporter-service",
+        "name": "Reporter Service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "14191160",
+        "path_with_namespace": "aangine/platform-customer-environment",
+        "path": "platform-customer-environment",
+        "name": "platform-customer-environment"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "14117901",
+        "path_with_namespace": "aangine/integration-persistence-service",
+        "path": "integration-persistence-service",
+        "name": "integration-persistence-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "13485870",
+        "path_with_namespace": "aangine/aangine-ui-test-scripts",
+        "path": "aangine-ui-test-scripts",
+        "name": "aangine-ui-test-scripts"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "12009001",
+        "path_with_namespace": "aangine/portfolio-item-service",
+        "path": "portfolio-item-service",
+        "name": "portfolio-item-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "11076346",
+        "path_with_namespace": "aangine/ppm-integration-agent",
+        "path": "ppm-integration-agent",
+        "name": "ppm-integration-agent"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "11075596",
+        "path_with_namespace": "aangine/ppm-integration-service",
+        "path": "ppm-integration-service",
+        "name": "ppm-integration-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "10263936",
+        "path_with_namespace": "aangine/characteristic-service",
+        "path": "characteristic-service",
+        "name": "characteristic-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "9256154",
+        "path_with_namespace": "aangine/auth-service",
+        "path": "auth-service",
+        "name": "auth-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "8583061",
+        "path_with_namespace": "aangine/aangine-ta",
+        "path": "aangine-ta",
+        "name": "aangine-ta"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "8498440",
+        "path_with_namespace": "aangine/thirdparty-scpsolver",
+        "path": "thirdparty-scpsolver",
+        "name": "thirdparty-scpsolver"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "8363640",
+        "path_with_namespace": "aangine/platform-env-list-ui",
+        "path": "platform-env-list-ui",
+        "name": "platform-env-list-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "8275899",
+        "path_with_namespace": "aangine/project-service-ongoingproject",
+        "path": "project-service-ongoingproject",
+        "name": "project-service-ongoingproject"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "7935579",
+        "path_with_namespace": "aangine/aangine-ui-scenario-comparison",
+        "path": "aangine-ui-scenario-comparison",
+        "name": "aangine-ui-scenario-comparison"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "7657203",
+        "path_with_namespace": "aangine/excel-integration-service",
+        "path": "excel-integration-service",
+        "name": "excel-integration-service"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "7641608",
+        "path_with_namespace": "aangine/business-service-business-api",
+        "path": "business-service-business-api",
+        "name": "business-service-business-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "7640903",
+        "path_with_namespace": "aangine/businessunit-service-businessunit",
+        "path": "businessunit-service-businessunit",
+        "name": "businessunit-service-businessunit"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6525083",
+        "path_with_namespace": "aangine/aangine-ui",
+        "path": "aangine-ui",
+        "name": "aangine-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6276914",
+        "path_with_namespace": "aangine/platform-qa-environment",
+        "path": "platform-qa-environment",
+        "name": "platform-qa-environment"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102614",
+        "path_with_namespace": "aangine/simulation-service-simulation-ui",
+        "path": "simulation-service-simulation-ui",
+        "name": "simulation-service-simulation-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102607",
+        "path_with_namespace": "aangine/webapp-service-network-ui",
+        "path": "webapp-service-network-ui",
+        "name": "webapp-service-network-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102602",
+        "path_with_namespace": "aangine/webapp-service-master-frame-ui",
+        "path": "webapp-service-master-frame-ui",
+        "name": "webapp-service-master-frame-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102596",
+        "path_with_namespace": "aangine/webapp-service-common-assets-ui",
+        "path": "webapp-service-common-assets-ui",
+        "name": "webapp-service-common-assets-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102590",
+        "path_with_namespace": "aangine/calendar-service-calendar-ui",
+        "path": "calendar-service-calendar-ui",
+        "name": "calendar-service-calendar-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6102575",
+        "path_with_namespace": "aangine/webapp-compose-ui",
+        "path": "webapp-compose-ui",
+        "name": "webapp-compose-ui"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6031825",
+        "path_with_namespace": "aangine/demand-service-demand-api",
+        "path": "demand-service-demand-api",
+        "name": "demand-service-demand-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "6018930",
+        "path_with_namespace": "aangine/demand-service-demand",
+        "path": "demand-service-demand",
+        "name": "demand-service-demand"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5981274",
+        "path_with_namespace": "aangine/simulation-service-simulation-api",
+        "path": "simulation-service-simulation-api",
+        "name": "simulation-service-simulation-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5981260",
+        "path_with_namespace": "aangine/simulation-service-simulation",
+        "path": "simulation-service-simulation",
+        "name": "simulation-service-simulation"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5973884",
+        "path_with_namespace": "aangine/methodology-service-methodology-api",
+        "path": "methodology-service-methodology-api",
+        "name": "methodology-service-methodology-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5968326",
+        "path_with_namespace": "aangine/methodology-service-methodology",
+        "path": "methodology-service-methodology",
+        "name": "methodology-service-methodology"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5849840",
+        "path_with_namespace": "aangine/calendar-service-calendar-api",
+        "path": "calendar-service-calendar-api",
+        "name": "calendar-service-calendar-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5842315",
+        "path_with_namespace": "aangine/capacity-service-capacity-api",
+        "path": "capacity-service-capacity-api",
+        "name": "capacity-service-capacity-api"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5841558",
+        "path_with_namespace": "aangine/capacity-service-capacity",
+        "path": "capacity-service-capacity",
+        "name": "capacity-service-capacity"
+    },
+    {
+        "namespace": {
+            "id": 2653348,
+            "name": "aangine",
+            "path": "aangine",
+            "kind": "group",
+            "full_path": "aangine",
+            "parent_id": null,
+            "avatar_url": "https://gitlab.com/uploads/-/system/group/avatar/2653348/Screen_Shot_2018-08-01_at_12.31.01.png",
+            "web_url": "https://gitlab.com/groups/aangine"
+        },
+        "id": "5817306",
+        "path_with_namespace": "aangine/calendar-service-calendar",
+        "path": "calendar-service-calendar",
+        "name": "calendar-service-calendar"
+    },
+    {
+        "namespace": {
+            "id": 7115574,
+            "name": "Backend Services",
+            "path": "backend-services",
+            "kind": "group",
+            "full_path": "aangine/backend-services",
+            "parent_id": 2653348,
+            "avatar_url": null,
+            "web_url": "https://gitlab.com/groups/aangine/backend-services"
+        },
+        "id": "16760241",
+        "path_with_namespace": "aangine/backend-services/composition-service",
+        "path": "composition-service",
+        "name": "composition-service"
+    }
+]

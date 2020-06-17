@@ -1,0 +1,281 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.6.0"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.6.0">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+    <org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction plugin="workflow-multibranch@2.21">
+      <jobPropertyDescriptors>
+        <string>hudson.model.ParametersDefinitionProperty</string>
+      </jobPropertyDescriptors>
+    </org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <displayName>QA/Demo Kubernetes Create Deploy</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableResumeJobProperty/>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>2</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>Git-Lab Continuous Software</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@2.2.2">
+          <name>Environment</name>
+          <description> Kubernetes Aangine Cluster Name</description>
+          <randomName>choice-parameter-0</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1.71">
+              <script>import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content.findAll{ ! it.name.contains(&quot;Mongo&quot;) }; return content.name;</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1.71">
+              <script>return [&quot;error&quot;]</script>
+              <sandbox>false</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>QADemoKubernetesCreateDeploy</projectName>
+          <projectFullName>QADemoKubernetesCreateDeploy</projectFullName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@2.2.2">
+          <name>Availability</name>
+          <description></description>
+          <randomName>choice-parameter-4059577593328619</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1.71">
+              <script>import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content.find{it.name==Environment}; return &quot;&lt;input name=&apos;value&apos; value=&apos;&quot;+content.freeSlots+&quot;&apos; class=&apos;setting-input&apos; type=&apos;text&apos; disabled style=&apos;width:auto;&apos;&gt;&quot;;</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1.71">
+              <script>return &quot;&lt;input name=&apos;value&apos; value=error class=&apos;setting-input&apos; type=&apos;text&apos; disabled style=&apos;width:auto;&apos;&gt;&quot;</script>
+              <sandbox>false</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>QADemoKubernetesCreateDeploy</projectName>
+          <projectFullName>QADemoKubernetesCreateDeploy</projectFullName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>Environment</referencedParameters>
+          <choiceType>ET_FORMATTED_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <hudson.model.StringParameterDefinition>
+          <name>Instance</name>
+          <description>Wanted Kubernetes Aangine instance label value</description>
+          <defaultValue>AangineMyValueInstance</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Namespace</name>
+          <description>Wanted Kubernetes namespace value</description>
+          <defaultValue>qa-aangine-myvalue-apps-namespace</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>MongoIP</name>
+          <description>Ip/hostname to the MongoDb Instance </description>
+          <defaultValue>0.0.0.0</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>MongoPort</name>
+          <description>Port Number to access to MongoDb Instance </description>
+          <defaultValue>27017</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>StackRepo</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>qa</string>
+              <string>demo</string>
+              <string>development</string>
+              <string>master</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>StackVersion</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>latest</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@2.2.2">
+          <name>IntanceType</name>
+          <description>Aangine instance product name</description>
+          <randomName>choice-parameter-3996601915604084</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1.71">
+              <script>import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/lib/jenkins/workspace/products.json&apos;).text; data = fileContent.replace(&apos;&quot;&apos;, &apos;&quot;&apos;); gitJson = new JsonSlurperClassic().parseText(data).findAll{ ! it.name.contains(&quot;mongo&quot;) }.sort{it.name}; return gitJson.collect{it.name};</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1.71">
+              <script>return [&quot;error&quot;]</script>
+              <sandbox>false</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>QADemoKubernetesCreateDeploy</projectName>
+          <projectFullName>QADemoKubernetesCreateDeploy</projectFullName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>Service</referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <hudson.model.BooleanParameterDefinition>
+          <name>Mock</name>
+          <description>Installs Mocked Data from the Microservice components</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>DeployJaeger</name>
+          <description>Deploy Jaeger product instance (this service drain out memory from the node, please use it only in case on emergency and a few instances per node)</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>/*
+properties([
+    parameters([
+        //style=&apos;width:200px;&apos;
+        //[$class: &apos;DynamicReferenceParameter&apos;, choiceType: &apos;ET_FORMATTED_HTML&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Environment&apos;, randomName: &apos;choice-parameter-0&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; TOKEN = &quot;c390ea021855084df75fa6adcfd22646324a1472953724986627af02fa3a3837&quot;; def connection = new URL(&quot;https://api.linode.com/v4/linode/instances&quot;).openConnection() as HttpURLConnection; connection.setRequestProperty( &apos;Authorization&apos;, &quot;Bearer ${TOKEN}&quot; ); def instances_json = new JsonSlurper().parseText(connection.inputStream.text); def instances = instances_json.data.findAll{it.label.contains(&quot;AangineDemo-&quot;) || it.label.contains(&quot;AangineQA-&quot;)}; instances.sort {a, b -&gt; Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, b.created) &lt;=&gt; Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, a.created)};html = &quot;&lt;select name=value&gt;&quot;; instances.each{html+=&quot;&lt;option value=\\&quot;${it.ipv4[0]}\\&quot;&gt;${it.label}&lt;/option&gt;&quot;}; html += &quot;&lt;/select&gt;&quot;; return \&quot;${html}\&quot;;&apos;&apos;&apos;]]],
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Environment&apos;, randomName: &apos;choice-parameter-0&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+
+        [$class: &apos;ParameterSeparatorDefinition&apos;,name: &apos;FOO_HEADER&apos;,sectionHeader: &quot;&quot;, separatorStyle: &quot;border: none;&quot;, sectionHeaderStyle: &quot;font-size: 15px; font-weight:bold; background-color: #fff; padding:8px; margin:0px; border-style:none;&quot;],
+         [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;InstanceType&apos;, randomName: &apos;choice-parameter-0&apos;, referencedParameters: &apos;Service&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/jenkins_home/workspace/git_projects.json&apos;).text; gitJson = new JsonSlurperClassic().parseText(fileContent); Map service = gitJson.find{it.path==Service} as Map; def r = service.get(&apos;repositories&apos;).find{it.name==Repository}.get(&apos;tags&apos;).sort{a,b-&gt;Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, b.details.created_at) &lt;=&gt; Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, a.details.created_at)}; return r.collect{it.name};&apos;&apos;&apos;]]],
+       [$class: &apos;ParameterSeparatorDefinition&apos;,name: &apos;FOO_HEADER&apos;,sectionHeader: &quot;&quot;, separatorStyle: &quot;border: none;&quot;, sectionHeaderStyle: &quot;font-size: 15px; font-weight:bold; background-color: #fff; padding:8px; margin:0px; border-style:none;&quot;],
+        
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: true, name: &apos;Service&apos;, randomName: &apos;choice-parameter-4&apos;, referencedParameters: &apos;&apos;, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/jenkins_home/workspace/git_projects.json&apos;).text; data = fileContent.replace(&apos;&quot;&apos;, &apos;&quot;&apos;); gitJson = new JsonSlurperClassic().parseText(data).sort{it.path}; return gitJson.collect{it.path};&apos;&apos;&apos;]]],
+        [$class: &apos;DynamicReferenceParameter&apos;, choiceType: &apos;ET_FORMATTED_HTML&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Group&apos;, randomName: &apos;choice-parameter-5&apos;, referencedParameters: &apos;Service&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/jenkins_home/workspace/git_projects.json&apos;).text; data = fileContent.replace(&apos;&quot;&apos;, &apos;&quot;&apos;); gitJson = new JsonSlurperClassic().parseText(data).find{it.path == Service}; return &quot;&lt;input name=&apos;value&apos; value=&apos;&quot;+gitJson.namespace.path+&quot;&apos; class=&apos;setting-input&apos; type=&apos;text&apos; disabled style=&apos;width:auto;&apos;&gt;&quot;;&apos;&apos;&apos;]]],
+
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: true, name: &apos;Repository&apos;, randomName: &apos;choice-parameter-6&apos;, referencedParameters: &apos;Service&apos;, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/jenkins_home/workspace/git_projects.json&apos;).text; gitJson = new JsonSlurperClassic().parseText(fileContent); Map service = gitJson.find{it.path==Service} as Map; def r = service.get(&apos;repositories&apos;); return r.collect{it.name};&apos;&apos;&apos;]]],
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: true, name: &apos;Version&apos;, randomName: &apos;choice-parameter-7&apos;, referencedParameters: &apos;Service, Repository&apos;, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.JsonSlurperClassic; def fileContent = new File(&apos;/var/jenkins_home/workspace/git_projects.json&apos;).text; gitJson = new JsonSlurperClassic().parseText(fileContent); Map service = gitJson.find{it.path==Service} as Map; def r = service.get(&apos;repositories&apos;).find{it.name==Repository}.get(&apos;tags&apos;).sort{a,b-&gt;Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, b.details.created_at) &lt;=&gt; Date.parse(&quot;yyyy-MM-dd&apos;T&apos;hh:mm:ss&quot;, a.details.created_at)}; return r.collect{it.name};&apos;&apos;&apos;]]],
+    ])
+])
+*/
+
+pipeline {
+    agent any
+    options {
+        timestamps()
+        timeout(time: 1, unit: &apos;HOURS&apos;)   // timeout on whole pipeline job
+        //disableConcurrentBuilds()
+    }
+    stages {
+//        stage (&quot;Slack Start Notifier&quot;){
+//            steps{
+//                script{
+//                    message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} Started by ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+//                    slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+//                }
+//            }
+//        }
+        stage (&apos;Execute K8s provisioning&apos;) {
+            steps{
+                script{
+                    ansiColor(&apos;xterm&apos;) {
+                        command = &quot;&quot;&quot;
+                        #!/bin/bash
+                        dos2unix $HOME/continuousdelivery/kubernetes-jenkins-procedures/provision-k8s-cluster.sh
+                        chmod +x $HOME/continuousdelivery/kubernetes-jenkins-procedures/provision-k8s-cluster.sh
+                        bash -c &quot;$HOME/continuousdelivery/kubernetes-jenkins-procedures/provision-k8s-cluster.sh ${params.Environment} ${params.Instance} ${params.Namespace} ${params.MongoIP} ${params.MongoPort} ${params.StackRepo} ${params.StackVersion} ${params.IntanceType} ${params.Mock} ${params.DeployJaeger} certs/mambas-generic.pem&quot;
+                        &quot;&quot;&quot;
+                        def output=&quot;&quot;
+                        try {
+                            output = sh( script: command, encoding: &apos;UTF-8&apos;, label: &apos;Creating Environment Instance&apos;, returnStatus: false, returnStdout: true )
+                        } catch (Exception ex) {
+                            println(&quot;Unable Verify Instance ${params.Instance} of Type ${params.InstanceType} : ${ex}&quot;)
+                            throw ex
+                        }
+                        println(output)
+                    }
+                }
+            }
+        }
+        stage (&apos;Verify New Service status&apos;) {
+            steps{
+                script{
+                    ansiColor(&apos;xterm&apos;) {
+                        command = &quot;&quot;&quot;
+                        #!/bin/bash
+                        dos2unix $HOME/continuousdelivery/kubernetes-jenkins-procedures/verify-k8s-cluster.sh
+                        chmod +x $HOME/continuousdelivery/kubernetes-jenkins-procedures/verify-k8s-cluster.sh
+                        bash -c &quot;$HOME/continuousdelivery/kubernetes-jenkins-procedures/verify-k8s-cluster.sh ${params.Environment} NO_NODE ${params.Instance} ${params.IntanceType}&quot;
+                        &quot;&quot;&quot;
+                        def output=&quot;&quot;
+                        try {
+                            output = sh( script: command, encoding: &apos;UTF-8&apos;, label: &apos;Verify Environment Instance&apos;, returnStatus: false, returnStdout: true )
+                        } catch (Exception ex) {
+                            println(&quot;Unable Verify Instance ${params.Instance} of Type ${params.InstanceType} : ${ex}&quot;)
+                            throw ex
+                        }
+                        println(output)
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script{
+                //message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} ${currentBuild.result} after ${currentBuild.durationString} ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+                
+                def duration = currentBuild.durationString.replace(&quot; and counting&quot;, &quot;&quot;)
+                message = &quot;&quot;&quot;&lt;${env.RUN_DISPLAY_URL}|${currentBuild.rawBuild.project.displayName} #${env.BUILD_NUMBER}&gt; - ${currentBuild.currentResult} after ${duration}\n*Environment*: &lt;http://${params.IP}/|${params.Environment}&gt;&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+            }
+        }
+    }
+}
+
+def slackColor(){
+    def messageColor = &quot;warning&quot;
+    switch(currentBuild.result) {
+        case &quot;SUCCESS&quot;:
+            messageColor = &quot;good&quot;
+            break
+        case &quot;UNSTABLE&quot;:
+            messageColor = &quot;warning&quot;
+            break
+        case &quot;FAILURE&quot;:
+            messageColor = &quot;danger&quot;
+            break
+        case null:
+            messageColor = &quot;&quot;
+    }
+    return messageColor
+}
+</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

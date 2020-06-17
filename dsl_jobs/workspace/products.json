@@ -1,0 +1,10 @@
+[
+	{ 
+		"name": "aangine",
+		"groups": ["aangine", "continuous-software", "backend-services"]
+	},
+	{
+		"name": "aangine-mongo",
+                "groups": ["aangine"]
+	}
+]

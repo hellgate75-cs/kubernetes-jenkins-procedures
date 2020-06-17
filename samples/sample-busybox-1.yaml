@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: default-subdomain-all
+spec:
+  selector:
+    app: busybox
+  clusterIP: None
+  ports:
+  - name: busybox # Actually, no port is needed.
+    port: 22
+    targetPort: 22
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox1
+  labels:
+    name: busybox-1
+    app: busybox
+spec:
+  hostname: busybox-1
+  #subdomain: subdomain
+#  dnsConfig:
+#    nameservers: 
+#    - 10.43.0.10
+  containers:
+  - image: busybox:1.28
+    command:
+      - sleep
+      - "36000000"
+    name: busybox
+#  hostAliases:
+#  - busybox2.subdomain.sample.svc.cluster.local
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox2
+  labels:
+    name: busybox-2
+    app: busybox
+spec:
+  hostname: busybox-2
+  #subdomain: subdomain
+#  dnsConfig:
+#    nameservers:
+#    - 10.43.0.10
+  containers:
+  - image: busybox:1.28
+    command:
+      - sleep
+      - "36000000"
+    name: busybox
+#  hostAliases:
+#  - busybox1.subdomain.sample.svc.cluster.local

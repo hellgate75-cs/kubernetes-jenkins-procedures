@@ -1,0 +1,5 @@
+.project
+connect-old-jenkins.sh
+connect-new-jenkins.sh
+bin
+kubernetes-aangine-charts

@@ -1,0 +1,36 @@
+services:
+  subdomain: aangine
+  affinityNodes:
+    - ip-172-40-20-197.eu-central-1.compute.internal
+  consulHostname: consul-public
+  consulPort: "8500"
+  mongoDbIp: "172.40.20.216"
+  mongoDbHostname: "aangine-db"
+  mongoDbPort: "27017"
+  aangineNginxNodeIp: "10.43.254.220"
+  aangineNginxNodePort: "80"
+  jaegerPublicNodeIp: "10.43.254.221"
+  jaegerPublicNodePort: "18089"
+  jaegerMsPrivateHostname: "jaeger"
+  jaegerMsPrivateUdpPort: "6831"
+  jaegerCollectorZipkinPort: "9411"
+  jaegerCollectorZipkinThriftPort: "5775"
+  jaegerCollectorAgentBinaryPort: "6832"
+  jaegerCollectorAgentConfigsPort: "5778"
+  jaegerCollectorCollectorZipkinPort: "9411"
+  jaegerCollectorHttpPort: "14268"
+  jaegerCollectorTChannelPort: "14267"
+  jaegerMsTracingEnabled: "true"
+  jaegerMsLogSpansEnabled: "true"
+  consulPublicNodeIp: "10.43.254.222"
+  consulPublicNodePort: "8500" 
+  addson_config:
+    create: true
+  addson_storage:
+    create: false
+  addson_mockup_data:
+    create: false
+  service_account:
+    create: true
+
+

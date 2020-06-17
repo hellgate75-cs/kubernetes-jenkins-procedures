@@ -1,0 +1,97 @@
+import groovy.json.*; 
+import org.json.JSONObject; 
+import groovy.json.JsonSlurperClassic;
+import groovy.json.JsonBuilder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
+
+def getCurrentProjectId(Service) {
+	def fileContent = new File('/var/lib/jenkins/workspace/GetAangineGitProjects2/gitlab_registry_projects.json').text; 
+	data = fileContent.replace('"', '"'); 
+	gitJson = new JsonSlurperClassic().parseText(data).find{it.path == Service}; 
+	def id=gitJson.id;
+	return id;
+}
+def get(def url) {
+    def personalAccessToken = "CKxDxsG9yU-gGD5wCNL1";  //cs-infra
+    def connection = new URL(url).openConnection() as HttpURLConnection;
+    connection.setRequestMethod("GET");
+    connection.setRequestProperty("PRIVATE-TOKEN", personalAccessToken);
+    //connection.setInstanceFollowRedirects(true);
+    //connection.setReadTimeout(60000);
+    connection.setConnectTimeout(60000);
+    connection.connect();
+    assert connection.getResponseCode() == 200;
+	return connection.getInputStream().getText();
+}
+def jsonParse(def json){
+    return new groovy.json.JsonSlurper().parseText(json);
+    //return readJSON(file: '', text: json)
+}
+def getRegistryRepositories(def projectId) {
+    def baseUrl = "https://gitlab.com/api/v4";
+	def ret = [];
+	def i = 1;
+	while( true ) {
+		String url = "${baseUrl}/projects/${projectId}/registry/repositories?per_page=100&page=${i}";
+		def repos = jsonParse(get(url));
+		if( repos.size() == 0 ) break
+		repos.each { repo -> ret.add(repo) }
+		i = i + 1;
+	}
+	return ret
+}
+def getTags(def projectId, def repositoryId) {
+    def baseUrl = "https://gitlab.com/api/v4";
+	def ret = [];
+	def i = 1;
+	while( true ) {
+		String url = "${baseUrl}/projects/${projectId}/registry/repositories/${repositoryId}/tags?per_page=100&page=${i}";
+		def tags = jsonParse(get(url));
+		if( tags.size() == 0 ) break
+		tags.each { tag -> ret.add(tag) }
+		i = i + 1;
+	}
+	return ret
+}
+def parallelEntitiesClosure(entities, maxPool, closure) {
+  def threadPool = Executors.newFixedThreadPool(maxPool)
+   try {
+    List<Future> futures = entities.collect {entity->
+      threadPool.submit({->
+      closure entity } as Callable);
+    }
+    // recommended to use following statement to ensure the execution of all tasks.
+    futures.each{ it.get() }
+  }finally {
+    threadPool.shutdown()
+  }
+}
+def collectProjectRepositories(def projectId) {
+	//println("Project: ${projectId}")
+
+	def repositories = getRegistryRepositories(projectId);
+
+	def finalRepositories = [];
+	
+	parallelEntitiesClosure(repositories, 5, { repository ->
+		ArrayList<HashMap> tags = getTags(projectId, repository.get("id"));
+
+		//println("Tags: ${tags.size()}");
+		if (tags.size() > 0) {
+            finalRepositories.add(repository);
+		}
+	})
+   
+    //return projects
+    return new JsonBuilder(finalRepositories).toPrettyString();
+}
+def getRepositoryNamesList(Service) {
+	return new groovy.json.JsonSlurper().parseText(collectProjectRepositories(getCurrentProjectId(Service))).collect{it.name}
+}
+def Service="aangine-ui"
+return getRepositoryNamesList(Service)

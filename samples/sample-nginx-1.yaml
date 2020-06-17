@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    matchLabels:
+      run: my-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: my-nginx
+    spec:
+      hostname: nginx-host
+#      subdomain: subdomain
+#      dnsConfig:
+#        nameservers:
+#        - 10.43.0.10
+      containers:
+      - name: my-nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-nginx-service
+  labels:
+    run: my-nginx
+spec:
+  clusterIP: None
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-service
+  labels:
+    run: my-nginx
+spec:
+#  clusterIP: None
+  type: LoadBalancer
+  ports:
+  - port: 90
+    targetPort: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-deploy
+  labels:
+    name: curl
+    app: busybox
+spec:
+  hostname: curl-host
+#  subdomain: subdomain
+#  dnsConfig:
+#    nameservers:
+#    - 10.43.0.10
+  containers:
+  - image: busybox:1.28
+    name: curl
+    command:
+      - tail
+      - "-f"
+      - "/etc/passwd"
+    tty: true
+#---
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: nginx-ingress
+#  namespace: test
+#  labels:
+#    run: my-nginx
+#spec:
+#  backend:
+#    serviceName: my-nginx-service
+#    servicePort: 90

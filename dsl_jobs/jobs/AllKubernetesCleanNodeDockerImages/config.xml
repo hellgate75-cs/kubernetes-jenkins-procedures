@@ -1,0 +1,230 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.6.0"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.6.0">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+    <org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction plugin="workflow-multibranch@2.21">
+      <jobPropertyDescriptors>
+        <string>hudson.model.ParametersDefinitionProperty</string>
+      </jobPropertyDescriptors>
+    </org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>2</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableResumeJobProperty/>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>Git-Lab Continuous Software</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <jenkins.plugins.office365connector.WebhookJobProperty plugin="Office-365-Connector@4.12.4">
+      <webhooks>
+        <jenkins.plugins.office365connector.Webhook>
+          <name>AllKubernetesCleanNodeDockerImages</name>
+          <url>https://outlook.office.com/webhook/62daae50-abf1-497d-8f66-ecffa7d67a6a@732dc01c-d8b6-4fe3-9fb4-13630e09cfe4/JenkinsCI/fbb30ef09e0e4149ac5ff9d0a299b9d1/e09772e0-6850-4170-9209-42c42650ceaf</url>
+          <startNotification>false</startNotification>
+          <notifySuccess>true</notifySuccess>
+          <notifyAborted>false</notifyAborted>
+          <notifyNotBuilt>false</notifyNotBuilt>
+          <notifyUnstable>true</notifyUnstable>
+          <notifyFailure>true</notifyFailure>
+          <notifyBackToNormal>true</notifyBackToNormal>
+          <notifyRepeatedFailure>false</notifyRepeatedFailure>
+          <timeout>30000</timeout>
+          <macros class="empty-list"/>
+          <factDefinitions class="empty-list"/>
+        </jenkins.plugins.office365connector.Webhook>
+      </webhooks>
+    </jenkins.plugins.office365connector.WebhookJobProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@2.2.2">
+          <name>Environment</name>
+          <description> Kubernetes Aangine Cluster Name</description>
+          <randomName>choice-parameter-0</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1.71">
+              <script>import groovy.json.*; 
+import org.json.JSONObject; 
+import groovy.json.JsonSlurper; 
+def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute(); 
+jsonObj = new JsonSlurper().parseText(proc.text); 
+def content =jsonObj.content; 
+return content.name;</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1.71">
+              <script>return [&quot;error&quot;]</script>
+              <sandbox>false</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>AllKubernetesCleanNodeDockerImages</projectName>
+          <projectFullName>AllKubernetesCleanNodeDockerImages</projectFullName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@2.2.2">
+          <name>Host</name>
+          <description> Kubernetes Aangine Node Name</description>
+          <randomName>choice-parameter-3985326936406566</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1.71">
+              <script>import groovy.json.*; 
+import org.json.JSONObject; 
+import groovy.json.JsonSlurper; 
+def proc= (&quot;k8s-cli -command show -subject nodes -cluster-name &quot;+Environment).execute(); 
+def jsonObj = new JsonSlurper().parseText(proc.text); 
+def content =jsonObj.content; 
+return content.name;</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1.71">
+              <script>return [&quot;error&quot;]</script>
+              <sandbox>false</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>AllKubernetesCleanNodeDockerImages</projectName>
+          <projectFullName>AllKubernetesCleanNodeDockerImages</projectFullName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>Environment</referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>Selection</name>
+          <description>Select docker image path root</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>ALL</string>
+              <string>registry.gitlab.com</string>
+              <string>registry.gitlab.com/aangine</string>
+              <string>registry.gitlab.com/aangine/kubernetes</string>
+              <string>registry.gitlab.com/continuous-software</string>
+              <string>registry.gitlab.com/aangine/auth-service/qa</string>
+              <string>registry.gitlab.com/aangine/aangine-ui/qa</string>
+              <string>registry.gitlab.com/aangine/capacity-service-capacity/qa</string>
+              <string>registry.gitlab.com/aangine/backend-services/composition-service/qa</string>
+              <string>registry.gitlab.com/aangine/businessunit-service-businessunit/qa</string>
+              <string>registry.gitlab.com/aangine/calendar-service-calendar/qa</string>
+              <string>registry.gitlab.com/aangine/characteristic-service/qa</string>
+              <string>registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config/qa</string>
+              <string>registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/consul/qa</string>
+              <string>registry.gitlab.com/continuous-software/platform-service-nginx/development</string>
+              <string>jaegertracing/all-in-one</string>
+              <string>rancher/local-path-provisioner</string>
+              <string>busybox</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>/*
+properties([
+    parameters([
+        //style=&apos;width:200px;&apos;
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Environment&apos;, randomName: &apos;choice-parameter-0&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= &quot;k8s-cli -command show -subject clusters -verify-slots true&quot;.execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+        [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Host&apos;, randomName: &apos;choice-parameter-1&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject nodes -cluster-name &quot;+Environment).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+       [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;Instance&apos;, randomName: &apos;choice-parameter-2&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject instances -cluster-name &quot;+Environment+&quot; -node-name &quot;+Host).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+       [$class: &apos;CascadeChoiceParameter&apos;, choiceType: &apos;PT_SINGLE_SELECT&apos;, description: &apos;&apos;, filterLength: 1, filterable: false, name: &apos;InstanceType&apos;, randomName: &apos;choice-parameter-3&apos;, referencedParameters: &apos;&apos;, omitValueField: true, script: [$class: &apos;GroovyScript&apos;, fallbackScript: [classpath: [], sandbox: false, script: &apos;return [&quot;error&quot;]&apos;], script: [classpath: [], sandbox: false, script: &apos;&apos;&apos;import groovy.json.*; import org.json.JSONObject; import groovy.json.JsonSlurper; def proc= (&quot;k8s-cli -command show -subject instances -cluster-name &quot;+Environment+&quot; -node-name &quot;+Host).execute();def jsonObj = new JsonSlurper().parseText(proc.text); def content =jsonObj.content; return content.name;&apos;&apos;&apos;]]],
+
+    ])
+])
+*/
+
+pipeline {
+    agent any
+    options {
+        timestamps()
+        timeout(time: 10, unit: &apos;MINUTES&apos;)   // timeout on whole pipeline job
+        //disableConcurrentBuilds()
+    }
+    stages {
+//        stage (&quot;Slack Start Notifier&quot;){
+//            steps{
+//                script{
+//                    message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} Started by ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+//                    slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+//                }
+//            }
+//        }
+        stage (&apos;Execute K8s Verify Deploy&apos;) {
+            steps{
+                script{
+                    ansiColor(&apos;xterm&apos;) {
+                        command = &quot;&quot;&quot;
+                        #!/bin/bash
+                        dos2unix $HOME/continuousdelivery/kubernetes-jenkins-procedures/clean-docker-images.sh
+                        chmod +x $HOME/continuousdelivery/kubernetes-jenkins-procedures/clean-docker-images.sh
+                        bash -c &quot;$HOME/continuousdelivery/kubernetes-jenkins-procedures/clean-docker-images.sh ${params.Environment} ${params.Host} certs/mambas-generic.pem ${params.Selection}&quot;
+                        &quot;&quot;&quot;
+                        def output=&quot;&quot;
+                        try {
+                            output = sh( script: command, encoding: &apos;UTF-8&apos;, label: &apos;Verify Environment Instance&apos;, returnStatus: false, returnStdout: true )
+                        } catch (Exception ex) {
+                            println(&quot;Unable Verify Instance ${params.Instance} of Type ${params.InstanceType} : ${ex}&quot;)
+                            throw ex
+                        }
+                        println(output)
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script{
+                //message = &quot;&quot;&quot;${currentBuild.rawBuild.project.displayName} - ${env.BUILD_DISPLAY_NAME} ${currentBuild.result} after ${currentBuild.durationString} ${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserName()} (&lt;${env.RUN_DISPLAY_URL}|Open&gt;)\n*Env*: &lt;http://${params.IP}/|${params.Environment}&gt;\n*Service*: ${params.Service}\n*Repository*: ${params.Repository}\n*Version*: ${params.Version}&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+                
+                def duration = currentBuild.durationString.replace(&quot; and counting&quot;, &quot;&quot;)
+                message = &quot;&quot;&quot;&lt;${env.RUN_DISPLAY_URL}|${currentBuild.rawBuild.project.displayName} #${env.BUILD_NUMBER}&gt; - ${currentBuild.currentResult} after ${duration}\n*Environment*: &lt;http://${params.IP}/|${params.Environment}&gt;&quot;&quot;&quot;
+                //slackSend color: slackColor(), message: message, channel: &quot;#environment-updates&quot;
+            }
+        }
+    }
+}
+def slackColor(){
+    def messageColor = &quot;warning&quot;
+    switch(currentBuild.result) {
+        case &quot;SUCCESS&quot;:
+            messageColor = &quot;good&quot;
+            break
+        case &quot;UNSTABLE&quot;:
+            messageColor = &quot;warning&quot;
+            break
+        case &quot;FAILURE&quot;:
+            messageColor = &quot;danger&quot;
+            break
+        case null:
+            messageColor = &quot;&quot;
+    }
+    return messageColor
+}
+</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

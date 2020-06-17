@@ -1,0 +1,168 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions/>
+  <description></description>
+  <displayName>Collect Aangine GitLab Projects</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>Git-Lab Continuous Software</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <hudson.triggers.TimerTrigger>
+          <spec># once in every one hour slot between 7.30 AM and 6.30 PM every weekday (perhaps at 7:30 AM, 8:30 AM 9:30 AM 10:30 AM 11:30 AM  12:30 AM 1:30 PM 2:30 PM 2:30 PM 3:30 PM 4:30 PM 5:30 PM 6:30 PM)
+30 7-19/1 * * 1-5</spec>
+        </hudson.triggers.TimerTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>import groovy.json.*; 
+import org.json.JSONObject; 
+import groovy.json.JsonSlurper;
+import groovy.json.JsonBuilder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
+
+node {
+    stage(&quot;Stage ${currentBuild.startTimeInMillis}&quot;) {
+        echo &quot;Create Aangine projects json file in folder: /var/lib/jenkins/workspace/GetAangineGitProjects2/&quot;
+        
+        def result = collectProjects()
+        //writeJSON file: &apos;git_projects.json&apos;, json: new groovy.json.JsonBuilder(result).toPrettyString()//, pretty: 4
+        writeFile file: &apos;/var/lib/jenkins/workspace/GetAangineGitProjects2/gitlab_registry_projects.json&apos;, text: result
+    }
+}
+
+
+
+def get(def url) {
+    def personalAccessToken = &quot;CKxDxsG9yU-gGD5wCNL1&quot;;  //cs-infra
+    def connection = new URL(url).openConnection() as HttpURLConnection;
+    connection.setRequestMethod(&quot;GET&quot;);
+    connection.setRequestProperty(&quot;PRIVATE-TOKEN&quot;, personalAccessToken);
+    //connection.setInstanceFollowRedirects(true);
+    //connection.setReadTimeout(60000);
+    connection.setConnectTimeout(60000);
+    connection.connect();
+    assert connection.getResponseCode() == 200;
+	return connection.getInputStream().getText();
+}
+def jsonParse(def json){
+    return new groovy.json.JsonSlurper().parseText(json);
+    //return readJSON(file: &apos;&apos;, text: json)
+}
+
+def getProjects(def groupId) {
+    def baseUrl = &quot;https://gitlab.com/api/v4&quot;;
+	def ret = [];
+//	def i = 1;
+//	while( i &lt; 20 ) {
+//		String url = &quot;${baseUrl}/groups/${groupId}?per_page=100&amp;page=${i}&quot;;
+		String url = &quot;${baseUrl}/groups/${groupId}&quot;;
+		def group = jsonParse(get(url));
+		def projects=group.get(&quot;projects&quot;);
+		println(&quot;Project size: ${projects.size()}&quot;)
+//		if(projects.size() == 0 ) break
+		projects.each { project -&gt; ret.add(project) }
+//		i = i + 1;
+//	}
+	return ret
+}
+
+class Project {                       
+    String id;
+    String name;
+    String path;
+    String path_with_namespace;
+    Object namespace;
+	Project(id, name, path, path_with_namespace,namespace) {
+        this.id = id
+        this.name = name
+        this.path = path
+        this.path_with_namespace = path_with_namespace
+      	this.namespace=namespace
+    }
+}
+
+def parallelEntitiesClosure(entities, maxPool, closure) {
+  def threadPool = Executors.newFixedThreadPool(maxPool)
+   try {
+    List&lt;Future&gt; futures = entities.collect {entity-&gt;
+      threadPool.submit({-&gt;
+      closure entity } as Callable);
+    }
+    // recommended to use following statement to ensure the execution of all tasks.
+    futures.each{ it.get() }
+  }finally {
+    threadPool.shutdown()
+  }
+}
+
+def projectPathList=[]
+
+def collectProjects() {
+    def groupId = &quot;2653348&quot;; //aangine
+    def otherGroupId=&quot;7115574&quot;; //aangine/backend-services
+    def finalProjects = [];
+
+    def projects = getProjects(groupId);
+  	println(&quot;Number of Projects group ${groupId} : ${projects.size()}&quot;)
+	projects.collect{ project -&gt; 
+//	parallelEntitiesClosure(projects, 5, { project -&gt; 
+//        println(&quot;Checking Project: ${project.get(&quot;name&quot;)}&quot;)
+//		if (projectPathList.contins(project.path) ) {
+			println(&quot;Adding Project: ${project.get(&quot;name&quot;)}&quot;)
+			finalProjects.add(new Project(
+			project.get(&quot;id&quot;),
+			project.get(&quot;name&quot;),
+			project.get(&quot;path&quot;),
+			project.get(&quot;path_with_namespace&quot;),
+            project.get(&quot;namespace&quot;)
+			));
+//		}
+//	})
+	}
+   
+   def otherProjects = getProjects(otherGroupId);
+  println(&quot;Number of Projects group ${otherGroupId} : ${otherProjects.size()}&quot;)
+   
+	otherProjects.collect{ project -&gt; 
+//	parallelEntitiesClosure(otherProjects, 5, { project -&gt; 
+//        println(&quot;Checking Project: ${project.get(&quot;name&quot;)}&quot;)
+//		if (projectPathList.contins(project.path) ) {
+			println(&quot;Adding Project: ${project.get(&quot;name&quot;)}&quot;)
+			finalProjects.add(new Project(
+			project.get(&quot;id&quot;),
+			project.get(&quot;name&quot;),
+			project.get(&quot;path&quot;),
+			project.get(&quot;path_with_namespace&quot;),
+            project.get(&quot;namespace&quot;)
+			));
+//		}
+//	})
+    }
+    //return projects
+    return new JsonBuilder(finalProjects).toPrettyString();
+}
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

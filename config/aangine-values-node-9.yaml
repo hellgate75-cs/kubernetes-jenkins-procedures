@@ -1,0 +1,226 @@
+services:
+  subdomain: ""
+  affinityNodes:
+    - AFFINITY_NODE_HOSTNAME
+  productionInstance: ENABLE_JEAGER
+  enableGloballyJaeger: false
+  consulHostname: consul-public
+  consulPort: "8508"
+  mongoDbIp: "MONGO_DB_IP"
+  mongoDbPort: "MONGO_DB_PORT"
+  aangineNginxNodePort: "88"
+  jaegerPublicNodePort: "18097"
+  jaegerMsPrivateHostname: "jaeger"
+  jaegerMsPrivateUdpPort: "6831"
+  jaegerCollectorZipkinPort: "9419"
+  jaegerCollectorHttpPort: "14276"
+  jaegerCollectorTChannelPort: "14259"
+  jaegerMsTracingEnabled: "true"
+  jaegerMsLogSpansEnabled: "true"
+  consulPublicNodePort: "8508"
+  consulPrivateDnsPort: "8608"
+  redisPublicNodePort: "6387"
+  addson_config:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  addson_storage:
+    create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  addson_mockup_data:
+    create: MOCKED_DATA
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-k8s-addson-config
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+  bridged_network:
+    create: false
+    image:
+      repository: kvaps/bridget
+      tag: v1.0.1
+      pullPolicy: Always
+  network_manager:
+    create: false
+    replicaCount: 1
+  local_volume_provisioner:
+    create: true
+  service_account:
+    create: true
+    image:
+      repository: busybox
+      repositoryTag: latest
+      pullPolicy: Always
+  auth:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/auth-service
+      repositoryBranch: AUTH_BRANCH
+      repositoryTag: AUTH_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  business_unit:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/businessunit-service-businessunit
+      repositoryBranch: BUSINESS_UNIT_BRANCH
+      repositoryTag: BUSINESS_UNIT_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  calendar:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/calendar-service-calendar
+      repositoryBranch: CALENDAR_BRANCH
+      repositoryTag: CALENDAR_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  capacity:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/capacity-service-capacity
+      repositoryBranch: CAPACITY_BRANCH
+      repositoryTag: CAPACITY_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  characteristic:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/characteristic-service
+      repositoryBranch: CHARACTERISTIC_BRANCH
+      repositoryTag: CHARACTERISTIC_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  composition_service:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/backend-services/composition-service
+      repositoryBranch: COMPOSITION_BRANCH
+      repositoryTag: COMPOSITION_VERSION
+      pullPolicy: Always
+    service:
+      enabled: true
+  excel_integration:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/excel-integration-service
+      repositoryBranch: EXCEL_INTEGRATION_BRANCH
+      repositoryTag: EXCEL_INTEGRATION_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  integration_persistence:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/integration-persistence-service
+      repositoryBranch: INTEGRATION_PERSISTENCE_BRANCH
+      repositoryTag: INTEGRATION_PERSISTENCE_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  methodology:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/methodology-service-methodology
+      repositoryBranch: METHODOLOGY_BRANCH
+      repositoryTag: METHODOLOGY_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  portfolio_item:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/portfolio-item-service
+      repositoryBranch: PORTFOLIO_ITEM_BRANCH
+      repositoryTag: PORTFOLIO_ITEM_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  ppm_integration:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/ppm-integration-agent
+      repositoryBranch: PPM_INTEGRATION_BRANCH
+      repositoryTag: PPM_INTEGRATION_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  ppm_integration_service:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/ppm-integration-service
+      repositoryBranch: PPM_INTEGRATION_SERVICE_BRANCH
+      repositoryTag: PPM_INTEGRATION_SERVICE_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  simulation:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/simulation-service-simulation
+      repositoryBranch: SIMULATION_BRANCH
+      repositoryTag: SIMULATION_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  aangine_ui:
+    create: true
+    image:
+      repository: registry.gitlab.com/aangine/aangine-ui
+      repositoryBranch: AANGINE_UI_BRANCH
+      repositoryTag: AANGINE_UI_VERSION
+      pullPolicy: Always
+      service:
+        enabled: true
+  consul:
+    single:
+      create: true
+    cluster:
+      create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/consul
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  jaeger:
+    create: ENABLE_JEAGER
+    image:
+      repository: jaegertracing/all-in-one
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  nginx:
+    noSSL:
+      create: true
+    withSSL:
+      create: false
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/nginx
+      repositoryBranch: development
+      repositoryTag: latest
+      pullPolicy: Always
+      service:
+        enabled: true
+  redis:
+    create: false
+    image:
+      repository: redis
+      repositoryTag: latest
+      pullPolicy: Always
+    service:
+      enabled: true
