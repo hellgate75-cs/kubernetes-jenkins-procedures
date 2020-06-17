@@ -49,7 +49,7 @@ Some of the components will be custom ones, such as:
 * Deploy UI
 * Keel / Bosh server activation Microservivces
 * Keel client activation Microservivce
-* Other not listed and not in drsign at the moment.
+* Other not listed and not in design at the moment.
 
 
 Enjoy your experience
