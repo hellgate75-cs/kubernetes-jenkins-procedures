@@ -36,6 +36,20 @@ A more suotable and productin ready Ci-Cd architecture sounds like the following
 <img width="1318" height="803" src="images/Prod-Kubernetes-Deploy.png"></img>
 </p><br/>
 
+Some of the appropriate architecture are existing products such as:
+* Bosh
+* Keel
+* NoSQL/SQL Database (Deploy Db)
+* Fluent-D
+* There is an existing helm repository manager anmed Chart Museum
+* etc
+* Tiller Deploy (Helm repository manager and installation executor)
+
+Some of the components will be custom ones, such as:
+* Deploy UI
+* Keel / Bosh server activation Microservivces
+* Keel client activation Microservivce
+* Other not listed and not in drsign at the moment.
 
 
 Enjoy your experience
