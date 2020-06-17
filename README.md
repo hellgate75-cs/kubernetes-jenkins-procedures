@@ -1,8 +1,11 @@
+<p align="center">
+<img width="893" height="274" src="images/jenkins.png"></img>
+</p><br/>
 # kubernetes-jenkins-procedures
 
 Project that contains Jenkins deploy procedures and data 
 
-It cointain [dsl_jobs](/dsl_jobs) used to create and use the workspace content.
+It cointains [dsl_jobs](/dsl_jobs) containing artifacts used to create (install) the Jenkins jobs.
 
 It's necessary on the jenkins machine/repository of full clean installation of following products:
 * [curl](https://curl.haxx.se/) -> net call tool
@@ -10,7 +13,6 @@ It's necessary on the jenkins machine/repository of full clean installation of f
 * [yq](https://mikefarah.gitbook.io/yq/) -> yaml parser tool
 * [helm](https://helm.sh/) -> Kubernetes Charts Tool
 * [k8s-cli](https://github.com/hellgate75/k8s-cli) -> Kubernetes cluster local repository manager.
-
 
 You must execute setup scripts:
 * [install-golang.sh](/install-golang.sh)
