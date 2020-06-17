@@ -22,6 +22,22 @@ You must execute setup scripts:
 
 In order to understand the procedure pleae start reading the DSL Jenkins files, present in folder  [dsl_jobs](/dsl_jobs).
 
+## Architecture
+
+The full scripting sampler is based on the following architectral design:
+
+<br/><p align="center">
+<img width="601" height="431" src="images/Kubernetes-Deploy.png"></img>
+</p><br/>
+
+A more suotable and productin ready Ci-Cd architecture sounds like the following one:
+
+<br/><p align="center">
+<img width="1318" height="803" src="images/Prod-Kubernetes-Deploy.png"></img>
+</p><br/>
+
+
+
 Enjoy your experience
 
 ## License
